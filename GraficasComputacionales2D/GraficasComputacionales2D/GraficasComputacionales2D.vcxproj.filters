@@ -19,12 +19,18 @@
     <Filter Include="Archivos de origen\Core">
       <UniqueIdentifier>{9cdacc9c-22a0-41c3-9954-6f9e64fe242b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Archivos de encabezado\ECS">
+      <UniqueIdentifier>{11f3b05b-b7dd-4645-b621-ce7e57f3b0c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp">
       <Filter>Archivos de origen</Filter>
     </ClCompile>
     <ClCompile Include="Source\Core\Window.cpp">
+      <Filter>Archivos de origen\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Core\CShape.cpp">
       <Filter>Archivos de origen\Core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -34,6 +40,27 @@
     </ClInclude>
     <ClInclude Include="Include\Window.h">
       <Filter>Archivos de encabezado\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Core\CShape.h">
+      <Filter>Archivos de encabezado\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ECS\Types.h">
+      <Filter>Archivos de encabezado\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ECS\SparseSet.h">
+      <Filter>Archivos de encabezado\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ECS\ComponentPool.h">
+      <Filter>Archivos de encabezado\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ECS\View.h">
+      <Filter>Archivos de encabezado\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ECS\Registry.h">
+      <Filter>Archivos de encabezado\ECS</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\ECS\System.h">
+      <Filter>Archivos de encabezado\ECS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

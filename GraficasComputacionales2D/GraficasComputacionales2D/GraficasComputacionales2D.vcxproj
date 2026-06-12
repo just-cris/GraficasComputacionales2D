@@ -167,10 +167,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Core\CShape.cpp" />
     <ClCompile Include="Source\Core\Window.cpp" />
     <ClCompile Include="Source\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Include\Core\CShape.h" />
+    <ClInclude Include="Include\ECS\ComponentPool.h" />
+    <ClInclude Include="Include\ECS\Registry.h" />
+    <ClInclude Include="Include\ECS\SparseSet.h" />
+    <ClInclude Include="Include\ECS\System.h" />
+    <ClInclude Include="Include\ECS\Types.h" />
+    <ClInclude Include="Include\ECS\View.h" />
     <ClInclude Include="Include\Prerequisites.h" />
     <ClInclude Include="Include\Window.h" />
   </ItemGroup>

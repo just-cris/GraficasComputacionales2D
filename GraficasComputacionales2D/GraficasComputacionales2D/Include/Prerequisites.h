@@ -1,6 +1,6 @@
 #pragma once
 
-//librerias
+// Librerías estándar
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -9,18 +9,23 @@
 #include <map>
 #include <fstream>
 #include <unordered_map>
+#include <memory>
+#include <cstdint>
+#include <limits>
+#include <tuple>
+#include <cstddef>
+#include <queue>
 
-// third parties
+// Librería externa: SFML
 #include <SFML/Graphics.hpp>
 
-// MACRO for safe release of resources
 #define SAFE_PTR_RELEASE(x) if(x != nullptr) { delete x; x = nullptr; }
 
 #define MESSAGE(classObj, method, state)                      \
 {                                                             \
     std::ostringstream os_;                                   \
     os_ << classObj << "::" << method << " : "                \
-        << "[CREATION OF RESOURCE" << ": " << state "] \n";\
+        << "[CREATION OF RESOURCE" << ": " << state << "]\n"; \
     std::cerr << os_.str();                                   \
 }
 
@@ -28,7 +33,16 @@
 {                                                                 \
     std::ostringstream os_;                                       \
     os_ << "ERROR : " << classObj << "::" << method << " : "      \
-        << "  Error in data from params [" << errorMSG"] \n"; \
+        << "  Error in data from params [" << errorMSG << "]\n";  \
     std::cerr << os_.str();                                       \
     exit(1);                                                      \
 }
+
+enum ShapeType {
+  EMPTY = 0, ///< Sin figura
+  CIRCLE = 1, ///< Círculo
+  RECTANGLE = 2, ///< Rectángulo
+  TRINAGLE = 3, ///< Triángulo (typo corregible si lo deseas)
+  POLYGON = 4, ///< Polígono
+  SQUARE = 5  ///< Cuadrado
+};
