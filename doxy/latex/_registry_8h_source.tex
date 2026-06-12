@@ -1,0 +1,209 @@
+\doxysection{Registry.\+h}
+\hypertarget{_registry_8h_source}{}\label{_registry_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}Types.h"{}}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}ComponentPool.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}View.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}System.h"{}}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\doxymbox{\hyperlink{namespace_e_c_s}{ECS}}\ \{}
+\DoxyCodeLine{00008\ \ \ \textcolor{keyword}{class\ }}
+\DoxyCodeLine{00009\ \ \ \doxymbox{\hyperlink{class_e_c_s_1_1_registry}{Registry}}\ \{}
+\DoxyCodeLine{00010\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00011\ \ \ \ \ EntityID\ CreateEntity()\ \{}
+\DoxyCodeLine{00012\ \ \ \ \ \ \ EntityIndex\ idx;}
+\DoxyCodeLine{00013\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!m\_freeList.empty())\ \{}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \ \ idx\ =\ m\_freeList.front();}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ m\_freeList.pop();}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ idx\ =\ \textcolor{keyword}{static\_cast<}EntityIndex\textcolor{keyword}{>}(m\_entities.size());}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ m\_versions.push\_back(0);}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ m\_entities.push\_back(\doxymbox{\hyperlink{namespace_e_c_s_ae57349dacd69675316bf59181f91de8c}{NULL\_ENTITY}});\ \textcolor{comment}{//placeholder}}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ EntityID\ \textcolor{keywordtype}{id}\ =\ \doxymbox{\hyperlink{namespace_e_c_s_a872b0fc700883a12946f78bae90a2509}{MakeEntityID}}(idx,\ m\_versions[idx]);}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ m\_entities[idx]\ =\ id;}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ id;}
+\DoxyCodeLine{00025\ \ \ \ \ \}}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordtype}{void}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ DestroyEntity(EntityID\ entity)\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ assert(IsAlive(entity)\ \&\&\ \textcolor{stringliteral}{"{}DestroyEntity:\ entidad\ inválida\ o\ ya\ destruida"{}});}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{comment}{//elimina\ todos\ los\ componentes\ de\ esta\ entidad}}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ [typeID,\ pool]\ :\ m\_componentPools)\ }
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ pool-\/>RemoveEntity(entity);}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \textcolor{comment}{//incrementa\ version,\ invalida\ IDs\ viejos}}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityIndex\ idx\ =\ \doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{GetEntityIndex}}(entity);}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ ++m\_versions[idx];}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ m\_entities[idx]\ =\ \doxymbox{\hyperlink{namespace_e_c_s_ae57349dacd69675316bf59181f91de8c}{NULL\_ENTITY}};}
+\DoxyCodeLine{00039\ \ \ \ \ \ \ m\_freeList.push(idx);}
+\DoxyCodeLine{00040\ \ \ \ \ \}}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ IsAlive(EntityID\ entity)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00044\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityIndex\ idx\ =\ \doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{GetEntityIndex}}(entity);}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ idx\ <\ m\_entities.size()\ \&\&\ m\_entities[idx]\ ==\ entity;}
+\DoxyCodeLine{00046\ \ \ \ \ \}}
+\DoxyCodeLine{00047\ \ \ \ \ [[nodiscard]]\ std::size\_t}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ EntityCount()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_entities.size()\ -\/\ m\_freeList.size();}
+\DoxyCodeLine{00050\ \ \ \ \ \}}
+\DoxyCodeLine{00051\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ std::vector<EntityID>\&}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ GetEntities()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_entities;}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}...\ Args>T\&}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ AddComponent(EntityId\ entity,\ Args\&\&...\ args)\ \{}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ assert(IsAlive(entity)\ \&\&\ \textcolor{stringliteral}{"{}AddComponent:\ entidad\ inválida"{}});}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ GetOrCreatePool<T>()-\/>Add(entity,\ std::forward<Args>(args)...);}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>\textcolor{keywordtype}{void}}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ RemoveComponent(EntityId\ entity)\ \{}
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{auto}*\ pool\ =\ GetPool<T>())}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ pool-\/>Remove(entity);}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00069\ \ \ \ \ T\&\ SetComponent(EntityID\ entity,\ T\ value)\ \{}
+\DoxyCodeLine{00070\ \ \ \ \ \ \ assert(IsAlive(entity)\ \&\&\ \textcolor{stringliteral}{"{}SetComponent:\ entidad\ inválida"{}});}
+\DoxyCodeLine{00071\ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ pool\ =\ GetOrCreatePool<T>();}
+\DoxyCodeLine{00072\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pool-\/>Contains(entity))\ \{}
+\DoxyCodeLine{00073\ \ \ \ \ \ \ \ \ pool-\/>Get(entity)\ =\ std::move(value);}
+\DoxyCodeLine{00074\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pool-\/>Get(entity);}
+\DoxyCodeLine{00075\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pool-\/>Add(entity,\ std::move(value));}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00080\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ HasComponent(EntityId\ entity)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00081\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}*\ pool\ =\ GetPool<T>();}
+\DoxyCodeLine{00082\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pool\ \&\&\ pool-\/>Contains(entity);}
+\DoxyCodeLine{00083\ \ \ \ \ \}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00086\ \ \ \ \ [[nodiscard]]\ T\&\ GetComponent(EntityID\ entity)\ \{}
+\DoxyCodeLine{00087\ \ \ \ \ \ \ assert(IsAlive(entity));}
+\DoxyCodeLine{00088\ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ pool\ =\ GetPool<T>();}
+\DoxyCodeLine{00089\ \ \ \ \ \ \ assert(pool\ \&\&\ \textcolor{stringliteral}{"{}GetComponent:\ pool\ no\ existe\ para\ este\ tipo"{}});}
+\DoxyCodeLine{00090\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pool-\/>Get(entity);}
+\DoxyCodeLine{00091\ \ \ \ \ \}}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00094\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ T\&\ GetComponent(EntityID\ entity)\textcolor{keyword}{\ const}}
+\DoxyCodeLine{00095\ \textcolor{keyword}{\ \ \ \ }\{}
+\DoxyCodeLine{00096\ \ \ \ \ \ \ assert(IsAlive(entity));}
+\DoxyCodeLine{00097\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}*\ pool\ =\ GetPool<T>();}
+\DoxyCodeLine{00098\ \ \ \ \ \ \ assert(pool\ \&\&\ \textcolor{stringliteral}{"{}GetComponent:\ pool\ no\ existe\ para\ este\ tipo"{}});}
+\DoxyCodeLine{00099\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pool-\/>Get(entity);}
+\DoxyCodeLine{00100\ \ \ \ \ \}}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00102\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00103\ \ \ \ \ [[nodiscard]]\ T*\ TryGetComponent(EntityID\ entity)\ \textcolor{keyword}{noexcept}}
+\DoxyCodeLine{00104\ \ \ \ \ \{}
+\DoxyCodeLine{00105\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!IsAlive(entity))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ pool\ =\ GetPool<T>();}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ pool\ ?\ pool-\/>TryGet(entity)\ :\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00108\ \ \ \ \ \}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}...\ Components>}
+\DoxyCodeLine{00111\ \ \ \ \ [[nodiscard]]\ View<Components...>GetView()\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ View<Components...>(GetOrCreatePool<Components>()...);}
+\DoxyCodeLine{00113\ \ \ \ \ \}}
+\DoxyCodeLine{00114\ }
+\DoxyCodeLine{00115\ \ \ \ \ \textcolor{comment}{//sistemas}}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T,\ \textcolor{keyword}{typename}...\ Args>}
+\DoxyCodeLine{00117\ \ \ \ \ T\&\ AddSystem(Args\&\&...\ args)}
+\DoxyCodeLine{00118\ \ \ \ \ \{}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \textcolor{keyword}{static\_assert}(std::is\_base\_of\_v<System,\ T>,\ \textcolor{stringliteral}{"{}T\ debe\ derivar\ de\ ECS::System"{}});}
+\DoxyCodeLine{00120\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ system\ =\ std::make\_unique<T>(std::forward<Args>(args)...);}
+\DoxyCodeLine{00121\ \ \ \ \ \ \ T\&\ ref\ =\ *system;}
+\DoxyCodeLine{00122\ \ \ \ \ \ \ system-\/>OnStart(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ m\_systems.push\_back(std::move(system));}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ref;}
+\DoxyCodeLine{00125\ \ \ \ \ \}}
+\DoxyCodeLine{00126\ }
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordtype}{void}\ UpdateSystems(\textcolor{keywordtype}{float}\ deltaTime)}
+\DoxyCodeLine{00128\ \ \ \ \ \{}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ system\ :\ m\_systems)\ }
+\DoxyCodeLine{00130\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (system-\/>IsEnable())\ }
+\DoxyCodeLine{00131\ \ \ \ \ \ \ \ \ \ \ system-\/>OnUpdate(*\textcolor{keyword}{this},\ deltaTime);}
+\DoxyCodeLine{00132\ \ \ \ \ \}}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00134\ \ \ \ \ \textcolor{keywordtype}{void}\ RemoveAllSystems()}
+\DoxyCodeLine{00135\ \ \ \ \ \{}
+\DoxyCodeLine{00136\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ system\ :\ m\_systems)\ }
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ system-\/>OnDestroy(*\textcolor{keyword}{this});}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ m\_systems.clear();}
+\DoxyCodeLine{00139\ \ \ \ \ \}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00141\ \ \ \ \ \textcolor{keywordtype}{void}}
+\DoxyCodeLine{00142\ \ \ \ \ \ \ Clear()\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ RemoveAllSystems();}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ [typeID,\ pool]\ :\ m\_componentPools)}
+\DoxyCodeLine{00146\ \ \ \ \ \ \ \ \ pool-\/>Clear();}
+\DoxyCodeLine{00147\ \ \ \ \ \ \ m\_entities.clear();}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ m\_versions.clear();}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (!m\_freeList.empty()m\_freeList.pop());}
+\DoxyCodeLine{00151\ \ \ \ \ \}}
+\DoxyCodeLine{00152\ }
+\DoxyCodeLine{00153\ \ \ \ \ \textcolor{comment}{//\ Acceso\ a\ pools\ sin\ tipo\ (para\ el\ Serializador)}}
+\DoxyCodeLine{00154\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ std::unordered\_map<ComponentTypeID,\ std::unique\_ptr<IComponentPool>>\&}
+\DoxyCodeLine{00155\ \ \ \ \ \ \ GetPools()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ m\_componentPools;\ \}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00158\ \ \ \textcolor{comment}{//\ -\/-\/-\/-\/-\/\ Helpers\ privados\ -\/-\/-\/-\/-\/}}
+\DoxyCodeLine{00159\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00160\ \ \ ComponentPool<T>*\ GetOrCreatePool()}
+\DoxyCodeLine{00161\ \ \ \{}
+\DoxyCodeLine{00162\ \ \ \ \ \textcolor{keyword}{const}\ ComponentTypeID\ typeID\ =\ \doxymbox{\hyperlink{namespace_e_c_s_a403c27e6a13334ff4d87159a9ed219c3}{GetComponentTypeID<T>}}();}
+\DoxyCodeLine{00163\ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ m\_componentPools.find(typeID);}
+\DoxyCodeLine{00164\ \ \ \ \ \textcolor{keywordflow}{if}\ (it\ ==\ m\_componentPools.end())}
+\DoxyCodeLine{00165\ \ \ \ \ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \textcolor{keyword}{auto}\ [newIt,\ ok]\ =\ m\_componentPools.emplace(}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ typeID,\ std::make\_unique<ComponentPool<T>>());}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}ComponentPool<T>*\textcolor{keyword}{>}(newIt-\/>second.get());}
+\DoxyCodeLine{00169\ \ \ \ \ \}}
+\DoxyCodeLine{00170\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}ComponentPool<T>*\textcolor{keyword}{>}(it-\/>second.get());}
+\DoxyCodeLine{00171\ \ \ \}}
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00174\ \ \ ComponentPool<T>*\ GetPool()\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{keyword}{const}\ ComponentTypeID\ typeID\ =\ \doxymbox{\hyperlink{namespace_e_c_s_a403c27e6a13334ff4d87159a9ed219c3}{GetComponentTypeID<T>}}();}
+\DoxyCodeLine{00176\ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ m\_componentPools.find(typeID);}
+\DoxyCodeLine{00177\ \ \ \ \ \textcolor{keywordflow}{return}\ (it\ !=\ m\_componentPools.end())}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}ComponentPool<T>*\textcolor{keyword}{>}(it-\/>second.get())}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ :\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00180\ \ \ \}}
+\DoxyCodeLine{00181\ }
+\DoxyCodeLine{00182\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00183\ \ \ \textcolor{keyword}{const}\ ComponentPool<T>*\ GetPoolConst()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00184\ \ \ \ \ \textcolor{keyword}{const}\ ComponentTypeID\ typeID\ =\ \doxymbox{\hyperlink{namespace_e_c_s_a403c27e6a13334ff4d87159a9ed219c3}{GetComponentTypeID<T>}}();}
+\DoxyCodeLine{00185\ \ \ \ \ \textcolor{keyword}{auto}\ it\ =\ m\_componentPools.find(typeID);}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00187\ \ \ \ \ \textcolor{keywordflow}{return}\ (it\ !=\ m\_componentPools.end())}
+\DoxyCodeLine{00188\ \ \ \ \ \ \ ?\ \textcolor{keyword}{static\_cast<}\textcolor{keyword}{const\ }ComponentPool<T>*\textcolor{keyword}{>}(it-\/>second.get())}
+\DoxyCodeLine{00189\ \ \ \ \ \ \ :\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00190\ \ \ \}}
+\DoxyCodeLine{00191\ }
+\DoxyCodeLine{00192\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00193\ \ \ \ \ \textcolor{comment}{//Entidades}}
+\DoxyCodeLine{00194\ \ \ \ \ std::vector<EntityID>\ \ \ \ \ \ m\_entities;}
+\DoxyCodeLine{00195\ \ \ \ \ std::vector<EntityVersion>\ m\_versions;}
+\DoxyCodeLine{00196\ \ \ \ \ std::queue<EntityIndex>\ \ \ \ m\_freeIndices;}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ \textcolor{comment}{//Componentes}}
+\DoxyCodeLine{00199\ \ \ \ \ std::unordered\_map<ComponentTypeID,\ std::unique\_ptr<IComponentPool>>m\_componentPools;}
+\DoxyCodeLine{00200\ }
+\DoxyCodeLine{00201\ \ \ \ \ \textcolor{comment}{//Sistemas}}
+\DoxyCodeLine{00202\ \ \ \ \ std::vector<std::unique\_ptr<System>>\ m\_systems;}
+\DoxyCodeLine{00203\ \ \ \};}
+\DoxyCodeLine{00204\ \}}
+
+\end{DoxyCode}

@@ -1,0 +1,79 @@
+\doxysection{Component\+Pool.\+h}
+\hypertarget{_component_pool_8h_source}{}\label{_component_pool_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}Prerequisites.h"{}}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}Types.h"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}SparseSet.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }\doxymbox{\hyperlink{namespace_e_c_s}{ECS}}\ \{}
+\DoxyCodeLine{00007\ \ \ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_e_c_s_1_1_i_component_pool}{IComponentPool}}\ :\ \textcolor{keyword}{public}\ SparceSet\ \{}
+\DoxyCodeLine{00008\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00009\ \ \ \ \ \textcolor{keyword}{virtual}\ \doxymbox{\hyperlink{class_e_c_s_1_1_i_component_pool}{\string~IComponentPool}}()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ RemoveEntity(EntityID\ entity)\ =\ 0;}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}*\ GetRaw(EntityID\ entity)\ \textcolor{keyword}{noexcept}\ =\ 0;}
+\DoxyCodeLine{00012\ \ \ \};}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_e_c_s_1_1component_pool}{componentPool}}\ final\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_e_c_s_1_1_i_component_pool}{IComponentPool}}\ \{}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}...\ Arg>}
+\DoxyCodeLine{00018\ \ \ \ \ T\&\ Add(EntityID\ entity,\ Arg\&\&...\ args)\ \{}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ assert(!Contains(entity)\ \&\&\ \textcolor{stringliteral}{"{}La\ entidad\ ya\ tiene\ el\ componente"{}});}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ InsertEntity(entity);}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ m\_components.emplace\_back(std::forward<Arg>(args)...);}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_components.back();}
+\DoxyCodeLine{00023\ \ \ \ \ \}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ \ \ \ \ [[nodiscard]]\ T\&\ Get(EntityID\ entity)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ assert(Contains(entity)\ \&\&\ \textcolor{stringliteral}{"{}La\ entidad\ no\ tiene\ el\ componente"{}});}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_components[m\_sparse[\doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{GetEntityIndex}}(entity)]];}
+\DoxyCodeLine{00028\ \ \ \ \ \}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ T\&\ Get(EntityID\ entity)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ assert(Contains(entity)\ \&\&\ \textcolor{stringliteral}{"{}La\ entidad\ no\ tiene\ el\ componente"{}});}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_components[m\_sparse[\doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{GetEntityIndex}}(entity)]];}
+\DoxyCodeLine{00033\ \ \ \ \ \}}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ [[nodiscard]]\ T*\ TryGet(EntityID\ entity)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Contains(entity))\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \&m\_components[m\_sparse[\doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{GetEntityIndex}}(entity)]];}
+\DoxyCodeLine{00038\ \ \ \ \ \}}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \ \ \ \ \textcolor{keywordtype}{void}\ Remove(EntityID\ entity)\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Contains(entity))\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityIndex\ denseIdx\ =\ m\_sparse[\doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{GetEntityIndex}}(entity)];}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \ \ \ \ m\_components[denseIdx]\ =\ std::move(m\_components.back());}
+\DoxyCodeLine{00045\ \ \ \ \ \ \ m\_components.pop\_back();}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \ \ \ \ \ \ SparceSet::Remove(entity);}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ RemoveEntity(EntityID\ entity)\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ Remove(entity);}
+\DoxyCodeLine{00052\ \ \ \ \ \}}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keywordtype}{void}*\ GetRaw(EntityID\ entity)\ \textcolor{keyword}{noexcept}\ \textcolor{keyword}{override}\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ TryGet(entity);}
+\DoxyCodeLine{00056\ \ \ \ \ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ \ \ \ \ [[nodiscard]]\ std::vector<T>\&\ GetComponents()\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_components;}
+\DoxyCodeLine{00060\ \ \ \ \ \}}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ std::vector<T>\&\ GetComponents()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00063\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_components;}
+\DoxyCodeLine{00064\ \ \ \ \ \}}
+\DoxyCodeLine{00065\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{void}\ Clear()\textcolor{keyword}{\ override\ }\{}
+\DoxyCodeLine{00067\ \ \ \ \ \ \ m\_components.clear();}
+\DoxyCodeLine{00068\ \ \ \ \ \ \ SparceSet::Clear();}
+\DoxyCodeLine{00069\ \ \ \ \ \}}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00071\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00072\ \ \ \ \ std::vector<T>\ m\_components;}
+\DoxyCodeLine{00073\ \ \ \};}
+\DoxyCodeLine{00074\ \}}
+
+\end{DoxyCode}

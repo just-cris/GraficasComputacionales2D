@@ -1,0 +1,55 @@
+\doxysection{ECS::\+Sparce\+Set Class Reference}
+\hypertarget{class_e_c_s_1_1_sparce_set}{}\label{class_e_c_s_1_1_sparce_set}\index{ECS::SparceSet@{ECS::SparceSet}}
+Inheritance diagram for ECS::\+Sparce\+Set:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_e_c_s_1_1_sparce_set}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_e_c_s_1_1_sparce_set_ac856eb19040e17164c9f57a0db9ea82f}\label{class_e_c_s_1_1_sparce_set_ac856eb19040e17164c9f57a0db9ea82f} 
+bool {\bfseries Contains} (Entity\+ID entity) const noexcept
+\item 
+\Hypertarget{class_e_c_s_1_1_sparce_set_ad655625faea50fde2176e7566aa96c19}\label{class_e_c_s_1_1_sparce_set_ad655625faea50fde2176e7566aa96c19} 
+size\+\_\+t {\bfseries size} () const noexcept
+\item 
+\Hypertarget{class_e_c_s_1_1_sparce_set_aaf24e27f950ff5e69b7a311e33de257c}\label{class_e_c_s_1_1_sparce_set_aaf24e27f950ff5e69b7a311e33de257c} 
+bool {\bfseries Empty} () const noexcept
+\item 
+\Hypertarget{class_e_c_s_1_1_sparce_set_ae48ab725e5d9bb5752c7d42bef60a986}\label{class_e_c_s_1_1_sparce_set_ae48ab725e5d9bb5752c7d42bef60a986} 
+const std::\+vector$<$ Entity\+ID $>$ \& {\bfseries Get\+Entities} () const noexcept
+\item 
+\Hypertarget{class_e_c_s_1_1_sparce_set_ae46b55da08b89798454b892e19f55d0d}\label{class_e_c_s_1_1_sparce_set_ae46b55da08b89798454b892e19f55d0d} 
+virtual void {\bfseries Remove} (Entity\+ID entity)
+\item 
+\Hypertarget{class_e_c_s_1_1_sparce_set_a42b839b4981d5112245a742d5f739f39}\label{class_e_c_s_1_1_sparce_set_a42b839b4981d5112245a742d5f739f39} 
+virtual void {\bfseries Clear} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_e_c_s_1_1_sparce_set_a6d07df098daba77ab0119766644df66d}\label{class_e_c_s_1_1_sparce_set_a6d07df098daba77ab0119766644df66d} 
+Entity\+Index {\bfseries Insert\+Entity} (Entity\+ID entity)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_e_c_s_1_1_sparce_set_a9b224a62b3a4616ef423dabd9ff72b2a}\label{class_e_c_s_1_1_sparce_set_a9b224a62b3a4616ef423dabd9ff72b2a} 
+std::\+vector$<$ Entity\+Index $>$ {\bfseries m\+\_\+sparse}
+\item 
+\Hypertarget{class_e_c_s_1_1_sparce_set_acef13cda66f7586894b4dc806257259d}\label{class_e_c_s_1_1_sparce_set_acef13cda66f7586894b4dc806257259d} 
+std::\+vector$<$ Entity\+ID $>$ {\bfseries m\+\_\+dense}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Static Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_e_c_s_1_1_sparce_set_a0654852d2e7309af5c869217fa8211e0}\label{class_e_c_s_1_1_sparce_set_a0654852d2e7309af5c869217fa8211e0} 
+static constexpr Entity\+Index {\bfseries INVALID} = std::\+numeric\+\_\+limits$<$Entity\+Index$>$::\+max()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Sparse\+Set.\+h\end{DoxyCompactItemize}

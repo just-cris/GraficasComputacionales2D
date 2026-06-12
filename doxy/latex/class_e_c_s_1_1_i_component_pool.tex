@@ -1,0 +1,55 @@
+\doxysection{ECS::\+IComponent\+Pool Class Reference}
+\hypertarget{class_e_c_s_1_1_i_component_pool}{}\label{class_e_c_s_1_1_i_component_pool}\index{ECS::IComponentPool@{ECS::IComponentPool}}
+Inheritance diagram for ECS::\+IComponent\+Pool:\+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_e_c_s_1_1_i_component_pool}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_e_c_s_1_1_i_component_pool_a0f0f7383a4f96b46a3ce5fed03b52384}\label{class_e_c_s_1_1_i_component_pool_a0f0f7383a4f96b46a3ce5fed03b52384} 
+virtual void {\bfseries Remove\+Entity} (Entity\+ID entity)=0
+\item 
+\Hypertarget{class_e_c_s_1_1_i_component_pool_a07f64406a9b6e8b955a7b72a61a88810}\label{class_e_c_s_1_1_i_component_pool_a07f64406a9b6e8b955a7b72a61a88810} 
+virtual void \texorpdfstring{$\ast$}{*} {\bfseries Get\+Raw} (Entity\+ID entity) noexcept=0
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \doxymbox{\hyperlink{class_e_c_s_1_1_sparce_set}{ECS::\+\+Sparce\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+bool {\bfseries Contains} (Entity\+ID entity) const noexcept
+\item 
+size\+\_\+t {\bfseries size} () const noexcept
+\item 
+bool {\bfseries Empty} () const noexcept
+\item 
+const std::\+vector$<$ Entity\+ID $>$ \& {\bfseries Get\+Entities} () const noexcept
+\item 
+virtual void {\bfseries Remove} (Entity\+ID entity)
+\item 
+virtual void {\bfseries Clear} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Member Functions inherited from \doxymbox{\hyperlink{class_e_c_s_1_1_sparce_set}{ECS::\+\+Sparce\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+Entity\+Index {\bfseries Insert\+Entity} (Entity\+ID entity)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes inherited from \doxymbox{\hyperlink{class_e_c_s_1_1_sparce_set}{ECS::\+\+Sparce\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+std::\+vector$<$ Entity\+Index $>$ {\bfseries m\+\_\+sparse}
+\item 
+std::\+vector$<$ Entity\+ID $>$ {\bfseries m\+\_\+dense}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Protected Attributes inherited from \doxymbox{\hyperlink{class_e_c_s_1_1_sparce_set}{ECS::\+\+Sparce\+Set}}}
+\begin{DoxyCompactItemize}
+\item 
+static constexpr Entity\+Index {\bfseries INVALID} = std::\+numeric\+\_\+limits$<$Entity\+Index$>$::\+max()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Component\+Pool.\+h\end{DoxyCompactItemize}

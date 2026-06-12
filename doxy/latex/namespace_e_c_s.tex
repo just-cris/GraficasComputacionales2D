@@ -1,0 +1,152 @@
+\doxysection{ECS Namespace Reference}
+\hypertarget{namespace_e_c_s}{}\label{namespace_e_c_s}\index{ECS@{ECS}}
+
+
+Sistema de Entidades, Componentes y Sistemas para el motor 2D.  
+
+
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \doxymbox{\hyperlink{class_e_c_s_1_1component_pool}{component\+Pool}}
+\item 
+class \doxymbox{\hyperlink{class_e_c_s_1_1_i_component_pool}{IComponent\+Pool}}
+\item 
+class \doxymbox{\hyperlink{class_e_c_s_1_1_registry}{Registry}}
+\item 
+class \doxymbox{\hyperlink{class_e_c_s_1_1_sparce_set}{Sparce\+Set}}
+\item 
+class \doxymbox{\hyperlink{class_e_c_s_1_1_system}{System}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Typedefs}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespace_e_c_s_a50fe03c2cf0c576814d4498785452d59}\label{namespace_e_c_s_a50fe03c2cf0c576814d4498785452d59} 
+using {\bfseries Entity\+Index} = uint32\+\_\+t
+\item 
+\Hypertarget{namespace_e_c_s_a75f4a3dd03f6772881b8724039f52d7e}\label{namespace_e_c_s_a75f4a3dd03f6772881b8724039f52d7e} 
+using {\bfseries Entity\+Version} = uint32\+\_\+t
+\item 
+\Hypertarget{namespace_e_c_s_ad65ee83aacb2383e4e3767fe7f33fb14}\label{namespace_e_c_s_ad65ee83aacb2383e4e3767fe7f33fb14} 
+using {\bfseries Entity\+ID} = uint64\+\_\+t
+\item 
+\Hypertarget{namespace_e_c_s_a0e93b4122f1ee39079e0d047e887154d}\label{namespace_e_c_s_a0e93b4122f1ee39079e0d047e887154d} 
+using {\bfseries Component\+Type\+ID} = uint32\+\_\+t
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+Entity\+Index \doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{Get\+Entity\+Index}} (Entity\+ID id) noexcept
+\begin{DoxyCompactList}\small\item\em Extrae el índice (ID único) de un identificador de entidad. \end{DoxyCompactList}\item 
+Entity\+Version \doxymbox{\hyperlink{namespace_e_c_s_a94ae0e2461898a07beafac6e70883a4a}{Get\+Entity\+Version}} (Entity\+ID id) noexcept
+\begin{DoxyCompactList}\small\item\em Extrae la versión de reciclaje de un identificador de entidad. \end{DoxyCompactList}\item 
+Entity\+ID \doxymbox{\hyperlink{namespace_e_c_s_a872b0fc700883a12946f78bae90a2509}{Make\+Entity\+ID}} (Entity\+Index index, Entity\+Version version) noexcept
+\begin{DoxyCompactList}\small\item\em Combina un índice y una versión para construir un Entity\+ID válido. \end{DoxyCompactList}\item 
+Component\+Type\+ID \doxymbox{\hyperlink{namespace_e_c_s_af99460bb91b71ff4a5c057d24ad11c8f}{Next\+Component\+Type\+ID}} () noexcept
+\begin{DoxyCompactList}\small\item\em Genera de forma secuencial un identificador único para nuevos componentes. \end{DoxyCompactList}\item 
+{\footnotesize template$<$typename T$>$ }\\Component\+Type\+ID \doxymbox{\hyperlink{namespace_e_c_s_a403c27e6a13334ff4d87159a9ed219c3}{Get\+Component\+Type\+ID}} () noexcept
+\begin{DoxyCompactList}\small\item\em Obtiene el identificador único del tipo de componente en tiempo de ejecución. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{namespace_e_c_s_ae57349dacd69675316bf59181f91de8c}\label{namespace_e_c_s_ae57349dacd69675316bf59181f91de8c} 
+constexpr Entity\+ID {\bfseries NULL\+\_\+\+ENTITY} = std::\+numeric\+\_\+limits$<$Entity\+ID$>$::\+max()
+\begin{DoxyCompactList}\small\item\em Constante que representa una entidad nula o inválida. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Sistema de Entidades, Componentes y Sistemas para el motor 2D. 
+
+Este namespace contiene las estructuras fundamentales para la gestión de entidades mediante un identificador único de 64 bits divididos. 
+
+\label{namespace_e_c_s_doc-func-members}
+\Hypertarget{namespace_e_c_s_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespace_e_c_s_a403c27e6a13334ff4d87159a9ed219c3}\index{ECS@{ECS}!GetComponentTypeID@{GetComponentTypeID}}
+\index{GetComponentTypeID@{GetComponentTypeID}!ECS@{ECS}}
+\doxysubsubsection{\texorpdfstring{GetComponentTypeID()}{GetComponentTypeID()}}
+{\footnotesize\ttfamily \label{namespace_e_c_s_a403c27e6a13334ff4d87159a9ed219c3} 
+template$<$typename T$>$ \\
+Component\+Type\+ID ECS::\+\+Get\+Component\+Type\+ID (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [nodiscard]}, {\ttfamily [noexcept]}}
+
+
+
+Obtiene el identificador único del tipo de componente en tiempo de ejecución. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & El tipo de la estructura o clase del componente (ej. Posicion, Velocidad). \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+El Component\+Type\+ID único asignado permanentemente a ese tipo T. 
+\end{DoxyReturn}
+\Hypertarget{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}\index{ECS@{ECS}!GetEntityIndex@{GetEntityIndex}}
+\index{GetEntityIndex@{GetEntityIndex}!ECS@{ECS}}
+\doxysubsubsection{\texorpdfstring{GetEntityIndex()}{GetEntityIndex()}}
+{\footnotesize\ttfamily \label{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520} 
+Entity\+Index ECS::\+\+Get\+Entity\+Index (\begin{DoxyParamCaption}\item[{Entity\+ID}]{id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [noexcept]}}
+
+
+
+Extrae el índice (ID único) de un identificador de entidad. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & El identificador único completo de 64 bits (Entity\+ID). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+El índice de la entidad correspondiente a los 32 bits bajos. 
+\end{DoxyReturn}
+\Hypertarget{namespace_e_c_s_a94ae0e2461898a07beafac6e70883a4a}\index{ECS@{ECS}!GetEntityVersion@{GetEntityVersion}}
+\index{GetEntityVersion@{GetEntityVersion}!ECS@{ECS}}
+\doxysubsubsection{\texorpdfstring{GetEntityVersion()}{GetEntityVersion()}}
+{\footnotesize\ttfamily \label{namespace_e_c_s_a94ae0e2461898a07beafac6e70883a4a} 
+Entity\+Version ECS::\+\+Get\+Entity\+Version (\begin{DoxyParamCaption}\item[{Entity\+ID}]{id}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [noexcept]}}
+
+
+
+Extrae la versión de reciclaje de un identificador de entidad. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & El identificador único completo de 64 bits (Entity\+ID). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+La versión de la entidad almacenada en los 32 bits altos. 
+\end{DoxyReturn}
+\Hypertarget{namespace_e_c_s_a872b0fc700883a12946f78bae90a2509}\index{ECS@{ECS}!MakeEntityID@{MakeEntityID}}
+\index{MakeEntityID@{MakeEntityID}!ECS@{ECS}}
+\doxysubsubsection{\texorpdfstring{MakeEntityID()}{MakeEntityID()}}
+{\footnotesize\ttfamily \label{namespace_e_c_s_a872b0fc700883a12946f78bae90a2509} 
+Entity\+ID ECS::\+\+Make\+Entity\+ID (\begin{DoxyParamCaption}\item[{Entity\+Index}]{index}{, }\item[{Entity\+Version}]{version}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [noexcept]}}
+
+
+
+Combina un índice y una versión para construir un Entity\+ID válido. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em index} & El índice o slot asignado en el gestor de entidades. \\
+\hline
+{\em version} & La versión actual para validar si la entidad sigue viva. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Un Entity\+ID empaquetado de 64 bits listo para su uso. 
+\end{DoxyReturn}
+\Hypertarget{namespace_e_c_s_af99460bb91b71ff4a5c057d24ad11c8f}\index{ECS@{ECS}!NextComponentTypeID@{NextComponentTypeID}}
+\index{NextComponentTypeID@{NextComponentTypeID}!ECS@{ECS}}
+\doxysubsubsection{\texorpdfstring{NextComponentTypeID()}{NextComponentTypeID()}}
+{\footnotesize\ttfamily \label{namespace_e_c_s_af99460bb91b71ff4a5c057d24ad11c8f} 
+Component\+Type\+ID ECS::\+\+Next\+Component\+Type\+ID (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [nodiscard]}, {\ttfamily [noexcept]}}
+
+
+
+Genera de forma secuencial un identificador único para nuevos componentes. 
+
+\begin{DoxyReturn}{Returns}
+Un nuevo Component\+Type\+ID incremental. 
+\end{DoxyReturn}

@@ -1,0 +1,43 @@
+\doxysection{Window.\+h}
+\hypertarget{_window_8h_source}{}\label{_window_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}Prerequisites.h"{}}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{keyword}{class\ }Window\ \{}
+\DoxyCodeLine{00005\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00006\ \ \ Window()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00007\ \ \ Window(\textcolor{keywordtype}{int}\ width,\ \textcolor{keywordtype}{int}\ height,\ \textcolor{keyword}{const}\ std::string\&\ title);}
+\DoxyCodeLine{00008\ \ \ \string~Window();}
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \ \ \textcolor{keywordtype}{bool}}
+\DoxyCodeLine{00011\ \ \ isOpen()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \textcolor{keywordtype}{void}}
+\DoxyCodeLine{00014\ \ \ clear(\textcolor{keyword}{const}\ sf::Color\&\ color\ =\ sf::Color(0,0,0,255));}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \ \ \textcolor{keywordtype}{void}}
+\DoxyCodeLine{00017\ \ \ draw(\textcolor{keyword}{const}\ sf::Drawable\ \&\ drawable,}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ sf::RenderStates\&\ states\ =\ sf::RenderStates::Default);}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \textcolor{keywordtype}{void}}
+\DoxyCodeLine{00021\ \ \ close();}
+\DoxyCodeLine{00022\ }
+\DoxyCodeLine{00023\ \ \ \textcolor{keywordtype}{void}}
+\DoxyCodeLine{00024\ \ \ update();}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \ \ \textcolor{keywordtype}{void}\ }
+\DoxyCodeLine{00027\ \ \ render();}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \textcolor{keywordtype}{void}}
+\DoxyCodeLine{00030\ \ \ destroy();}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00033\ \ \ sf::View\ m\_view;}
+\DoxyCodeLine{00034\ \ \ sf::RenderWindow\ m\_window;}
+\DoxyCodeLine{00035\ \ \ sf::Time\ deltaTime;}
+\DoxyCodeLine{00036\ \ \ sf::Clock\ clock;}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00038\ \};}
+
+\end{DoxyCode}

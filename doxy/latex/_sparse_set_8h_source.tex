@@ -1,0 +1,77 @@
+\doxysection{Sparse\+Set.\+h}
+\hypertarget{_sparse_set_8h_source}{}\label{_sparse_set_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}Prerequisites.h"{}}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}ECS/Types.h"{}}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{namespace\ }\doxymbox{\hyperlink{namespace_e_c_s}{ECS}}\ \{}
+\DoxyCodeLine{00007\ \ \ \textcolor{keyword}{class}}
+\DoxyCodeLine{00008\ \ \ \ \ SparceSet\ \{}
+\DoxyCodeLine{00009\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00010\ \ \ \ \ SparceSet()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keyword}{virtual}\ \string~SparceSet()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00013\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ Contains(EntityID\ entity)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00014\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityIndex\ idx\ =\ \doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{GetEntityIndex}}(entity);}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (idx\ >=\ m\_sparse.size())\ \textcolor{keywordflow}{return}\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityIndex\ denseIdx\ =\ m\_sparse[idx];}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ denseIdx\ <\ m\_dense.size()\ \&\&\ m\_dense[denseIdx]\ ==\ entity;}
+\DoxyCodeLine{00018\ \ \ \ \ \}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ size()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_dense.size();}
+\DoxyCodeLine{00022\ \ \ \ \ \}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ Empty()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_dense.empty();}
+\DoxyCodeLine{00026\ \ \ \ \ \}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ [[nodiscard]]\ \textcolor{keyword}{const}\ std::vector<EntityID>\&\ GetEntities()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ m\_dense;}
+\DoxyCodeLine{00030\ \ \ \ \ \}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Remove(EntityID\ entity)\ \{}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!Contains(entity))\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityIndex\ sparseIdx\ =\ \doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{GetEntityIndex}}(entity);}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityIndex\ denseIdx\ =\ m\_sparse[sparseIdx];}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityID\ last\ =\ m\_dense.back();}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00039\ \ \ \ \ \ \ m\_dense[denseIdx]\ =\ last;}
+\DoxyCodeLine{00040\ \ \ \ \ \ \ m\_sparse[\doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{GetEntityIndex}}(last)]\ =\ denseIdx;}
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00042\ \ \ \ \ \ \ m\_dense.pop\_back();}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ m\_sparse[sparseIdx]\ =\ INVALID;}
+\DoxyCodeLine{00044\ \ \ \ \ \}}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ Clear()\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ m\_sparse.clear();}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ m\_dense.clear();}
+\DoxyCodeLine{00048\ \ \ \ \ \}}
+\DoxyCodeLine{00049\ }
+\DoxyCodeLine{00050\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00051\ \ \ \ \ EntityIndex\ InsertEntity(EntityID\ entity)\ \{}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityIndex\ sparseIdx\ =\ \doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{GetEntityIndex}}(entity);}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityIndex\ denseIdx\ =\ \textcolor{keyword}{static\_cast<}EntityIndex\textcolor{keyword}{>}(m\_dense.size());}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00055\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (sparseIdx\ >=\ m\_sparse.size())\ \{}
+\DoxyCodeLine{00056\ \ \ \ \ \ \ \ \ m\_sparse.resize(sparseIdx\ +\ 1,\ INVALID);}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ \ \ \ \ \ \ assert(m\_sparse[sparseIdx]\ ==\ INVALID\ \&\&\ \textcolor{stringliteral}{"{}Entity\ already\ exists\ in\ the\ set"{}});}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \ \ m\_sparse[sparseIdx]\ =\ denseIdx;}
+\DoxyCodeLine{00062\ \ \ \ \ \ \ m\_dense.push\_back(entity);}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ denseIdx;}
+\DoxyCodeLine{00065\ \ \ \ \ \}}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00067\ \ \ \textcolor{keyword}{protected}:}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{constexpr}\ EntityIndex\ INVALID\ =\ std::numeric\_limits<EntityIndex>::max();}
+\DoxyCodeLine{00069\ \ \ \ \ std::vector<EntityIndex>\ m\_sparse;}
+\DoxyCodeLine{00070\ \ \ \ \ std::vector<EntityID>\ m\_dense;}
+\DoxyCodeLine{00071\ \ \ \};}
+\DoxyCodeLine{00072\ \}}
+
+\end{DoxyCode}

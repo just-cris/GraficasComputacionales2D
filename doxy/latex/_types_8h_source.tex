@@ -1,0 +1,40 @@
+\doxysection{Types.\+h}
+\hypertarget{_types_8h_source}{}\label{_types_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}Prerequisites.h"{}}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{namespace\ }\doxymbox{\hyperlink{namespace_e_c_s}{ECS}}\ \{}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \textcolor{keyword}{using\ }EntityIndex\ =\ uint32\_t;}
+\DoxyCodeLine{00014\ \ \ \textcolor{keyword}{using\ }EntityVersion\ =\ uint32\_t;}
+\DoxyCodeLine{00015\ \ \ \textcolor{keyword}{using\ }EntityID\ =\ uint64\_t;}
+\DoxyCodeLine{00016\ \ \ \textcolor{keyword}{using\ }ComponentTypeID\ =\ uint32\_t;}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00019\ \ \ \textcolor{keyword}{inline}\ \textcolor{keyword}{constexpr}\ EntityID\ \doxymbox{\hyperlink{namespace_e_c_s_ae57349dacd69675316bf59181f91de8c}{NULL\_ENTITY}}\ =\ std::numeric\_limits<EntityID>::max();}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00026\ \ \ [[nodiscard]]\ \textcolor{keyword}{inline}\ EntityIndex\ \doxymbox{\hyperlink{namespace_e_c_s_a3c4c53e1c4b60a21f9ceffe9cb59a520}{GetEntityIndex}}(EntityID\ \textcolor{keywordtype}{id})\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}EntityIndex\textcolor{keyword}{>}(\textcolor{keywordtype}{id}\ \&\ 0xFFF'FFFFFull);}
+\DoxyCodeLine{00028\ \ \ \}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00035\ \ \ [[nodiscard]]\ \textcolor{keyword}{inline}\ EntityVersion\ \doxymbox{\hyperlink{namespace_e_c_s_a94ae0e2461898a07beafac6e70883a4a}{GetEntityVersion}}(EntityID\ \textcolor{keywordtype}{id})\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{static\_cast<}EntityVersion\textcolor{keyword}{>}((\textcolor{keywordtype}{id}\ >>\ 32)\ \&\ 0xFFF'FFFFFull);}
+\DoxyCodeLine{00037\ \ \ \}}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00045\ \ \ [[nodiscard]]\ \textcolor{keyword}{inline}\ EntityID\ \doxymbox{\hyperlink{namespace_e_c_s_a872b0fc700883a12946f78bae90a2509}{MakeEntityID}}(EntityIndex\ index,\ EntityVersion\ version)\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordflow}{return}\ (\textcolor{keyword}{static\_cast<}EntityID\textcolor{keyword}{>}(version)\ <<\ 32)\ |\ \textcolor{keyword}{static\_cast<}EntityID\textcolor{keyword}{>}(index);}
+\DoxyCodeLine{00047\ \ \ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00053\ \ \ [[nodiscard]]\ \textcolor{keyword}{inline}\ ComponentTypeID\ \doxymbox{\hyperlink{namespace_e_c_s_af99460bb91b71ff4a5c057d24ad11c8f}{NextComponentTypeID}}()\ noexcept\ \{}
+\DoxyCodeLine{00054\ \ \ \ \ \textcolor{keyword}{static}\ ComponentTypeID\ counter\ =\ 0;}
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordflow}{return}\ counter++;}
+\DoxyCodeLine{00056\ \ \ \}}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00063\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ T>}
+\DoxyCodeLine{00064\ \ \ [[nodiscard]]\ ComponentTypeID\ \doxymbox{\hyperlink{namespace_e_c_s_a403c27e6a13334ff4d87159a9ed219c3}{GetComponentTypeID}}()\ noexcept\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keyword}{static}\ \textcolor{keyword}{const}\ ComponentTypeID\ ID\ =\ \doxymbox{\hyperlink{namespace_e_c_s_af99460bb91b71ff4a5c057d24ad11c8f}{NextComponentTypeID}}();}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordflow}{return}\ ID;}
+\DoxyCodeLine{00067\ \ \ \}}
+\DoxyCodeLine{00068\ \}}
+
+\end{DoxyCode}

@@ -1,38 +1,53 @@
+/**
+ * @file Window.cpp
+ * @brief Implementación de la envoltura de la ventana de renderizado de SFML, control de tiempo y eventos.
+ */
+
 #include "Core/Window.h"
 #include "Prerequisites.h"
 
-Window::Window(int width, int height, const std::string& title) {
-  m_window = new sf::RenderWindow(sf::VideoMode({static_cast<unsigned int>(width),
-                                                 static_cast<unsigned int>(height)}),
-            title,
-            sf::Style::Default);
-  if (m_window) {
+Window::Window(int width, int height, const std::string& title) 
+{
+  m_window = new sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(width),
+                                                 static_cast<unsigned int>(height) }),
+    title,
+    sf::Style::Default);
+  if (m_window) 
+  {
     m_window->setFramerateLimit(60);
-    MESSAGE("Window","Window", "Window created succesfully");
+    MESSAGE("Window", "Window", "Window created succesfully");
   }
-  else {
+  else 
+  {
     ERROR("Window", "Window", "Failed creating window");
   }
 }
 
-Window::~Window() {
+Window::~Window() 
+{
   destroy();
 }
 
 bool
-Window::isOpen() const {
+Window::isOpen() const 
+{
   //check if the window is not null
-  if (!m_window) {
+  if (!m_window) 
+  {
     return m_window && m_window->isOpen();
-  }else{
+  }
+  else 
+  {
     ERROR("Window", "isOpen", "is null");
     return false;
   }
 }
 
-void 
-Window::draw(const sf::Drawable& drawable, const sf::RenderStates& states) {
-  if (m_window) {
+void
+Window::draw(const sf::Drawable& drawable, const sf::RenderStates& states) 
+{
+  if (m_window) 
+  {
     m_window->draw(drawable, states);
   }
   else {
@@ -41,8 +56,10 @@ Window::draw(const sf::Drawable& drawable, const sf::RenderStates& states) {
 }
 
 void
-Window::display() {
-  if (m_window) {
+Window::display() 
+{
+  if (m_window) 
+  {
     m_window->display();
   }
   else {
@@ -50,17 +67,20 @@ Window::display() {
   }
 }
 
-void 
-Window::update() {
+void
+Window::update() 
+{
   //almacena deltaTime una vez
   deltaTime = clock.restart();
 }
 
 void
-Window::render() {
+Window::render() 
+{
 }
 
 void
-Window::destroy() {
+Window::destroy() 
+{
   SAFE_PTR_RELEASE(m_window);
 }

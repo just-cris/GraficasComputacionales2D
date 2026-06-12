@@ -1,0 +1,73 @@
+\doxysection{View.\+h}
+\hypertarget{_view_8h_source}{}\label{_view_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}ECS/ComponentPool.h"{}}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{keyword}{namespace\ }ESC\ \{}
+\DoxyCodeLine{00005\ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}...\ Components>}
+\DoxyCodeLine{00006\ \ \ \textcolor{keyword}{class\ }View\ \{}
+\DoxyCodeLine{00007\ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00008\ \ \ \ \ \textcolor{keyword}{explicit}\ View(ComponentPool<Components>\&...\ pools)\ noexcept}
+\DoxyCodeLine{00009\ \ \ \ \ \ \ :\ m\_pool(\&pools...)\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \ \ FindSmallest();}
+\DoxyCodeLine{00011\ \ \ \ \ \}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Func>}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{void}\ Each(Func\&\&\ func)\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!m\_smallest)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ entities\ =\ m\_smallest-\/>GetEntities();}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (std::size\_t\ i\ =\ entities.size();\ i\ >\ 0;\ -\/-\/i)\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityID\ entity\ =\ entities[i\ -\/\ 1];}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (AllHave(entity))\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ std::apply(}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ [\&](\textcolor{keyword}{auto}*...\ pools)\ \{}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ func(entity,\ pools-\/>Get(entity)...);}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ m\_pools);}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00027\ \ \ \ \ \}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{typename}\ Func>}
+\DoxyCodeLine{00030\ \ \ \ \ \textcolor{keywordtype}{void}\ EachEntity(Func\&\&\ func)\ \{}
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!m\_smallest)\ \textcolor{keywordflow}{return};}
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \textcolor{keyword}{const}\ \textcolor{keyword}{auto}\&\ entities\ =\ m\_smallest-\/>GetEntities();}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (std::size\_t\ i\ =\ entities.size();\ i\ >\ 0;\ -\/-\/i)\ \{}
+\DoxyCodeLine{00034\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ EntityID\ entity\ =\ entities[i\ -\/\ 1];}
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (AllHave(entity))\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \ \ func(entity);}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ Empty()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ !m\_smallest\ ||\ m\_smallest-\/>Empty();\ \}}
+\DoxyCodeLine{00042\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{size\_t}\ Size()\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{\ \textcolor{keywordflow}{return}\ m\_smallest\ ?\ m\_smallest-\/>size()\ :\ 0;\ \}}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00044\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keyword}{template}<std::\textcolor{keywordtype}{size\_t}\ I\ =\ 0>}
+\DoxyCodeLine{00046\ \ \ \ \ \textcolor{keywordtype}{void}\ FindSmallest()\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00047\ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keyword}{constexpr}\ (I\ <\ \textcolor{keyword}{sizeof}...(Components))\ \{}
+\DoxyCodeLine{00048\ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}*\ pool\ =\ std::get<I>(m\_pool);}
+\DoxyCodeLine{00049\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (pool\ \&\&\ (!m\_smallest\ ||\ pool-\/>size()\ <\ m\_smallest-\/>size()))\ \{}
+\DoxyCodeLine{00050\ \ \ \ \ \ \ \ \ \ \ m\_smallest\ =\ pool;}
+\DoxyCodeLine{00051\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00052\ \ \ \ \ \ \ \ \ FindSmallest<I\ +\ 1>();}
+\DoxyCodeLine{00053\ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00054\ \ \ \ \ \}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \ \ \ \ [[nodiscard]]\ \textcolor{keywordtype}{bool}\ AllHave(EntityID\ entity)\ \textcolor{keyword}{const}\ \textcolor{keyword}{noexcept}\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::apply(}
+\DoxyCodeLine{00058\ \ \ \ \ \ \ \ \ [entity](\textcolor{keyword}{auto}*...\ pools)\ \{}
+\DoxyCodeLine{00059\ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (...\ \&\&\ (pools\ \&\&\ pools-\/>Contains(entity)));}
+\DoxyCodeLine{00060\ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{00061\ \ \ \ \ \ \ \ \ m\_pools);}
+\DoxyCodeLine{00062\ \ \ \ \ \}}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00065\ \ \ \ \ std::tuple<ComponentPool<Components>*...>\ m\_pool;}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keyword}{const}\ SparceSet*\ m\_smallest\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00067\ \ \ \};}
+\DoxyCodeLine{00068\ \}}
+
+\end{DoxyCode}

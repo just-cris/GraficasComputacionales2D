@@ -1,0 +1,64 @@
+\doxysection{ECS::\+Registry Class Reference}
+\hypertarget{class_e_c_s_1_1_registry}{}\label{class_e_c_s_1_1_registry}\index{ECS::Registry@{ECS::Registry}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_a21ff62620abb568932d0724c7c0a313c}\label{class_e_c_s_1_1_registry_a21ff62620abb568932d0724c7c0a313c} 
+Entity\+ID {\bfseries Create\+Entity} ()
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_af24fc341e3f07a3add16e4493e044b70}\label{class_e_c_s_1_1_registry_af24fc341e3f07a3add16e4493e044b70} 
+void {\bfseries Destroy\+Entity} (Entity\+ID entity)
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_a06680977f6907a17ca6ab840a8b28d80}\label{class_e_c_s_1_1_registry_a06680977f6907a17ca6ab840a8b28d80} 
+bool {\bfseries Is\+Alive} (Entity\+ID entity) const noexcept
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_abefa2af89ba7e6143262b98a5b57aa1f}\label{class_e_c_s_1_1_registry_abefa2af89ba7e6143262b98a5b57aa1f} 
+std::\+size\+\_\+t {\bfseries Entity\+Count} () const noexcept
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_a6e4ca4b4241fe32cafaf96c285fd753a}\label{class_e_c_s_1_1_registry_a6e4ca4b4241fe32cafaf96c285fd753a} 
+const std::\+vector$<$ Entity\+ID $>$ \& {\bfseries Get\+Entities} () const noexcept
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_aec3de892177829ed770ff720463d47de}\label{class_e_c_s_1_1_registry_aec3de892177829ed770ff720463d47de} 
+{\footnotesize template$<$typename T, typename... Args$>$ }\\T \& {\bfseries Add\+Component} (Entity\+Id entity, Args \&\&... args)
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_adb83402b9a841fe4419d844691b74947}\label{class_e_c_s_1_1_registry_adb83402b9a841fe4419d844691b74947} 
+{\footnotesize template$<$typename T$>$ }\\void {\bfseries Remove\+Component} (Entity\+Id entity)
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_a1a09d24c5a44a558d2cfa92c543190a2}\label{class_e_c_s_1_1_registry_a1a09d24c5a44a558d2cfa92c543190a2} 
+{\footnotesize template$<$typename T$>$ }\\T \& {\bfseries Set\+Component} (Entity\+ID entity, T value)
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_a7b25e6780453a0487f4f76987c529640}\label{class_e_c_s_1_1_registry_a7b25e6780453a0487f4f76987c529640} 
+{\footnotesize template$<$typename T$>$ }\\bool {\bfseries Has\+Component} (Entity\+Id entity) const noexcept
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_acb63bac60089f4be78c8badd48bdc81b}\label{class_e_c_s_1_1_registry_acb63bac60089f4be78c8badd48bdc81b} 
+{\footnotesize template$<$typename T$>$ }\\T \& {\bfseries Get\+Component} (Entity\+ID entity)
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_afcb3d4efe4201e8913063e0421647d79}\label{class_e_c_s_1_1_registry_afcb3d4efe4201e8913063e0421647d79} 
+{\footnotesize template$<$typename T$>$ }\\const T \& {\bfseries Get\+Component} (Entity\+ID entity) const
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_a7b32b5af57c1f91723d1cfe86f4f57aa}\label{class_e_c_s_1_1_registry_a7b32b5af57c1f91723d1cfe86f4f57aa} 
+{\footnotesize template$<$typename T$>$ }\\T \texorpdfstring{$\ast$}{*} {\bfseries Try\+Get\+Component} (Entity\+ID entity) noexcept
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_a28044c23a84cfa93b8c32ce58978ca3f}\label{class_e_c_s_1_1_registry_a28044c23a84cfa93b8c32ce58978ca3f} 
+{\footnotesize template$<$typename... Components$>$ }\\View$<$ Components... $>$ {\bfseries Get\+View} ()
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_a3d899bd53658a7b79b41ffb0ded32103}\label{class_e_c_s_1_1_registry_a3d899bd53658a7b79b41ffb0ded32103} 
+{\footnotesize template$<$typename T, typename... Args$>$ }\\T \& {\bfseries Add\+System} (Args \&\&... args)
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_ab89b924ccc55fb5b30a7f58555355834}\label{class_e_c_s_1_1_registry_ab89b924ccc55fb5b30a7f58555355834} 
+void {\bfseries Update\+Systems} (float delta\+Time)
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_abe3b66b965bfbf2a0b3e76e176acda35}\label{class_e_c_s_1_1_registry_abe3b66b965bfbf2a0b3e76e176acda35} 
+void {\bfseries Remove\+All\+Systems} ()
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_a1e0ce0ce746c68beaa35104e63d23089}\label{class_e_c_s_1_1_registry_a1e0ce0ce746c68beaa35104e63d23089} 
+void {\bfseries Clear} ()
+\item 
+\Hypertarget{class_e_c_s_1_1_registry_a4cf7a8f1539348d11e382799f83bb931}\label{class_e_c_s_1_1_registry_a4cf7a8f1539348d11e382799f83bb931} 
+const std::\+unordered\+\_\+map$<$ Component\+Type\+ID, std::\+unique\+\_\+ptr$<$ \doxymbox{\hyperlink{class_e_c_s_1_1_i_component_pool}{IComponent\+Pool}} $>$ $>$ \& {\bfseries Get\+Pools} () const noexcept
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file:\+\begin{DoxyCompactItemize}
+\item 
+Registry.\+h\end{DoxyCompactItemize}
